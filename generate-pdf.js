@@ -17,19 +17,24 @@ fs.readdir(`./catalogs/${catalog.name}/images`, function (err, archivos) {
     if (catalog.data.length === archivos.length) {
         const doc = new jsPDF();
         let indexImage = 1;
-        doc.setFontSize(18);
+        doc.setFontSize(80);
+        doc.text("Catálogo", 50, 150);
+        doc.addPage();
         doc.setTextColor("#ff7433")
-        catalog.data.map(function (model) {
+        doc.setFontSize(18);
+        catalog.data.map(function (model, index) {
             if (indexImage === 1) {
                 indexImage = 2;
-                doc.addImage(base64_encode(`./catalogs/${catalog.name}/images/${model.Codigo}.jpg`), 35, 0, 145, 145);
-                doc.text(model.Codigo, 45, 145)
+                doc.addImage(base64_encode(`./catalogs/${catalog.name}/images/${model.Codigo}.jpg`), 30, 0, 150, 150);
+                doc.text(model.Codigo, 43, 145)
                 doc.save(`./catalogs/${catalog.name}/${catalog.name}.pdf`);
             } else {
                 indexImage = 1;
-                doc.addImage(base64_encode(`./catalogs/${catalog.name}/images/${model.Codigo}.jpg`), 35, 146, 145, 145);
-                doc.text(model.Codigo, 45, 290)
-                doc.addPage();
+                doc.addImage(base64_encode(`./catalogs/${catalog.name}/images/${model.Codigo}.jpg`), 30, 148, 150, 150);
+                doc.text(model.Codigo, 43, 290)
+                if (index < catalog.data.length - 1) {
+                    doc.addPage();
+                }
                 doc.save(`./catalogs/${catalog.name}/${catalog.name}.pdf`);
             }
         });
