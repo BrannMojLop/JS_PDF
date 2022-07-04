@@ -7,7 +7,8 @@ const catalog = readerFile('./docs/Catalog.xlsx')
 console.log('Start programming..................');
 
 function base64_encode(file) {
-    return "data:image/gif;base64," + fs.readFileSync(file, 'base64');
+    let data = "data:image/gif;base64," + fs.readFileSync(file, { encoding: 'base64' });
+    return data;
 }
 
 fs.readdir(`./catalogs/${catalog.name}/images`, function (err, archivos) {

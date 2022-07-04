@@ -1,24 +1,39 @@
-var fs = require('fs'),
-    request = require('request');
+const Fs = require('fs')
+const Axios = require('axios')
 const readerFile = require('./reader-file').readerFile;
 
 const catalog = readerFile('./docs/Catalog.xlsx')
-fs.mkdirSync(`./catalogs/${catalog.name}/images/`, { recursive: true });
+Fs.mkdirSync(`./catalogs/${catalog.name}/images/`, { recursive: true });
 
-var download = function (uri, filename, callback) {
-    request.head(uri, function (err, res, body) {
-        if (res.statusCode === 200) {
-            request(uri).pipe(fs.createWriteStream(filename));
-        }
-    });
-};
+async function download(url, filename) {
+    const writer = Fs.createWriteStream(filename)
+
+    const response = await Axios({
+        url,
+        method: 'GET',
+        responseType: 'stream'
+    })
+
+    response.data.pipe(writer)
+
+    return new Promise((resolve, reject) => {
+        writer.on('finish', resolve)
+        writer.on('error', reject)
+    })
+}
 
 const imagesDownload = function () {
     catalog.data.map(function (model) {
-        const uriImage = `https://images-eos.sfo3.digitaloceanspaces.com/catalog/${model.Codigo}/0_medium.jpg`
-        const filename = `catalogs/${catalog.name}/images/`.concat(`${model.Codigo}.jpg`);
-        download(uriImage, filename);
+        const imageName = model.Codigo.toUpperCase();
+        const uriImage = `https://images-eos.sfo3.digitaloceanspaces.com/catalog/${imageName}/0_medium.jpg`
+        const filename = `catalogs/${catalog.name}/images/`.concat(`${imageName}_medium.jpg`);
+        download(uriImage, filename).then(() => {
+            console.log(`Download successful: ${imageName}`);
+        }).catch(e => {
+            console.log(e);
+        });
     });
 }
 
 imagesDownload();
+
