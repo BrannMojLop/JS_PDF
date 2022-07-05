@@ -26,7 +26,7 @@ const imagesDownload = function () {
     catalog.data.map(function (model) {
         const imageName = model.Codigo.toUpperCase();
         const uriImage = `https://images-eos.sfo3.digitaloceanspaces.com/catalog/${imageName}/0_medium.jpg`
-        const filename = `catalogs/${catalog.name}/images/`.concat(`${imageName}_medium.jpg`);
+        const filename = `catalogs/${catalog.name}/images/`.concat(`${imageName}.jpg`);
         download(uriImage, filename).then(() => {
             console.log(`Download successful: ${imageName}`);
         }).catch(e => {
