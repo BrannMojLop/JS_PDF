@@ -25,7 +25,7 @@ async function download(url, filename) {
 const imagesDownload = function () {
     catalog.data.map(function (model) {
         const imageName = model.Codigo.toUpperCase();
-        const uriImage = `https://elements-of-steel.com.mx/catalog/${imageName}/0_medium.jpg`
+        const uriImage = `https://elements-of-steel.com.mx/images/catalog/${imageName}/0_medium.jpg`
         const filename = `catalogs/${catalog.name}/images/`.concat(`${imageName}.jpg`);
         download(uriImage, filename).then(() => {
             console.log(`Download successful: ${imageName}`);
