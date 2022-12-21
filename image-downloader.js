@@ -1,4 +1,4 @@
-const Fs = require('fs')
+﻿const Fs = require('fs')
 const Axios = require('axios')
 const readerFile = require('./reader-file').readerFile;
 
@@ -25,8 +25,8 @@ async function download(url, filename) {
 const imagesDownload = function () {
     catalog.data.map(function (model) {
         const imageName = model.Codigo.toUpperCase();
-        const uriImage = `https://elements-of-steel.com.mx/images/catalog/${imageName}/0_medium.jpg`
-        const filename = `catalogs/${catalog.name}/images/`.concat(`${imageName}.jpg`);
+        const uriImage = `https://elements-of-steel.com.mx/images/catalog/${imageName}/0_medium.webp`
+        const filename = `catalogs/${catalog.name}/images/`.concat(`${imageName}.webp`);
         download(uriImage, filename).then(() => {
             console.log(`Download successful: ${imageName}`);
         }).catch(e => {
